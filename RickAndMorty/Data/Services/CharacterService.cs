@@ -13,11 +13,11 @@ namespace RickAndMorty.Data.Services
             _httpClient.BaseAddress = new Uri("https://rickandmortyapi.com/api/");
         }
 
-        public async Task<Characters> GetAllCharacters()
+        public async Task<Characters> GetAllCharacters(int id)
         {
             try
             {
-                HttpResponseMessage httpResponseMessage = await _httpClient.GetAsync("character/");
+                HttpResponseMessage httpResponseMessage = await _httpClient.GetAsync($"character/?page={id}");
                 httpResponseMessage.EnsureSuccessStatusCode();
                 string responseBody = await httpResponseMessage.Content.ReadAsStringAsync();
 
