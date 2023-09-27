@@ -7,21 +7,29 @@
 <MudText Style="display:flex; justify-content:center" Typo="Typo.h2">Characters</MudText>
 <MudGrid  >
     <MudItem sm="6" xs="6">
-        <MudTextField Margin="Margin.Normal" Immediate="true" @bind-Value="searchTerm" Label="Buscar" Placeholder="Ingrese un término de búsqueda" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Search" />
+        <MudTextField Margin="Margin.Normal" Immediate="true" @bind-Value="searchTerm" Label="Buscar" TextChanged="search" Placeholder="Ingrese un término de búsqueda" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Search" />
     </MudItem>
     <MudItem sm="6" xs="6">
-        <MudSelect T="string"  @bind-Value="value" Label="Status">
-            <MudSelectItem Value="@("All")"/>
+        <MudSelect T="string"  SelectedValuesChanged="search" @bind-Value="value" Label="Status">
+            <MudSelectItem   Value="@("All")" />
             <MudSelectItem  Value="@("Alive")" />
-            <MudSelectItem Value="@("Dead")" />
+            <MudSelectItem   Value="@("Dead")" />
             <MudSelectItem Value="@("Unknown")" />
         </MudSelect>
     </MudItem>
+ @*   <MudItem sm="2" xs="2">
+        <MudSelect T="string" @bind-Value="value" Label="Status">
+            <MudSelectItem Value="@("All")" />
+            <MudSelectItem Value="@("Alive")" />
+            <MudSelectItem Value="@("Dead")" />
+            <MudSelectItem Value="@("Unknown")" />
+        </MudSelect>
+    </MudItem>*@
    
   
     
 @if (characters == null)
-{ <MudItem xxl="3" lg="3" md="3" xs="12" sm="6" >
+{ <MudItem xxl="3" lg="3" md="3" xs="12" sm="6"  >
             <MudCard >
                 <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="270px" />
         <MudCardContent>
@@ -37,35 +45,23 @@
     </MudItem>
 }
 else{
-        @foreach (var Character in characters.results.Where(c =>
+        @foreach (var Character in characters.results@*.Where(c =>
        (string.IsNullOrWhiteSpace(searchTerm) || c.name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)) &&
-       (string.IsNullOrWhiteSpace(value) || string.Equals(value, "All", StringComparison.OrdinalIgnoreCase) || c.status.Equals(value, StringComparison.OrdinalIgnoreCase))))
+       (string.IsNullOrWhiteSpace(value) || string.Equals(value, "All", StringComparison.OrdinalIgnoreCase) || c.status.Equals(value, StringComparison.OrdinalIgnoreCase)))*@)
         {
-            <MudItem xs="12" sm="3"  >
-
-                <MudCard Elevation="4">
-                    <MudCardMedia Image=@Character.image  Width="200"  />
-                   
-            <MudCardContent>
-                <MudText Typo="Typo.h4">@Character.name</MudText>
-                        <MudText Typo="Typo.h5"><MudIcon Color=@GetColor(Character.status) Icon="@Icons.Material.Filled.Circle" /> @Character.status</MudText>
-                        <MudText Typo="Typo.body2">@Character.location.name</MudText>
-                
-            </MudCardContent>
-            <MudCardActions>
-           
-            </MudCardActions>
-        </MudCard>
+            <MudItem xs="12" sm="3"   >
+                <CharacterModal character="@Character" />             
+            </MudItem>
+    }
+             <MudItem xs="12" sm="12"   >
+        <div class="d-flex flex-column align-center">
+                <MudPagination BoundaryCount="5" MiddleCount="10"  Count="@characters.info.pages"  SelectedChanged="getPage" Class="mt-4" />
+        </div>
         </MudItem>
-    }   
-}
+    }
+
  
 </MudGrid>
-<div class="d-flex flex-column align-center" >
-    
-    <MudPagination BoundaryCount="2" MiddleCount="5" Count="22" @bind-Selected="@_selected"  onchange="@getpage()" Class="mt-4" />
-   
-</div>
 
 
 <MudScrollToTop>
@@ -73,22 +69,56 @@ else{
 </MudScrollToTop>
 
 @code {
-    private string value { get; set; } = "All";
+    private int currentPage { get; set; } = 1;
+    private string value { get; set; } = "";
     private string searchTerm = "";
     private string status = "";
     private int _selected{ get; set; }
+    private int pagination { get; set; }
+    private int pages{ get; set; }
+    public Characters characters { get; set; } = null;
 
-    public async Task getpage()
+
+
+    async Task search()
     {
-        characters = await charactersService.GetAllCharacters(_selected);
+        try
+        {
+            if (value == "All") value = "";
+
+            currentPage = 1;
+            characters = await charactersService.GetCharacterByName(currentPage, searchTerm, value);
+
+        }
+        catch (Exception ex)
+        {
+
+            throw ex;
+        }
+
+
+
+
         StateHasChanged();
     }
-    public Characters characters { get; set; } =null;
+    async Task getPage(int x)
+    {
+
+        characters = await charactersService.GetCharacterByName(x, searchTerm, value);
+      
+
+
+        StateHasChanged();
+    }
+    
+  
     protected override async Task OnInitializedAsync()
     {
-        _selected = 1;
-        characters = await charactersService.GetAllCharacters(_selected);
-       
+
+        characters = await charactersService.GetCharacterByName();
+
+     
+
     }
     private Dictionary<string, Color> statusColors = new Dictionary<string, Color>
     {

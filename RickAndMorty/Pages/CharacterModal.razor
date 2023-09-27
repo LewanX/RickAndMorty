@@ -1,0 +1,66 @@
+﻿@using RickAndMorty.Data.Models
+
+
+      <MudPopover RelativeWidth  Open="_isOpen" OverflowBehavior="OverflowBehavior.FlipAlways" AnchorOrigin="MudBlazor.Origin.TopCenter" TransformOrigin="MudBlazor.Origin.TopCenter" Paper="false">
+            
+            
+        
+          
+          
+          <MudPaper Outlined="true" Class="px-1 py-1" >
+            
+        <MudText Align="Align.Left"><MudIcon Icon=@Icons.Material.Filled.Person /><b>Gender: </b>@character.gender</MudText>
+        <MudText Align="Align.Left"><MudIcon Icon="fas fa-globe-europe" /><b>Origin: </b>@character.origin.name</MudText>
+        <MudText Align="Align.Left"><MudIcon Icon=@Icons.Material.Filled.Error /><b>Species: </b>@character.species</MudText>
+        
+        </MudPaper>
+       </MudPopover>
+
+       <a onclick="@ToggleOpen">
+    <MudCard Elevation="4" Style="height=100%">
+        <MudCardMedia Image=@character.image Width="200" />
+
+        <MudCardContent >
+           
+            <MudText Typo="Typo.h4">@character.name</MudText>
+            <MudText Typo="Typo.h5"><MudIcon Color=@GetColor(character.status) Icon="@Icons.Material.Filled.Circle" /> @character.status</MudText>
+            <MudText Typo="Typo.overline">  Last known location:</MudText>
+            <MudText  Typo="Typo.body2">@character.location.name</MudText>
+
+        </MudCardContent>
+    </MudCard>
+       </a>
+     
+   
+   
+
+ 
+@code {
+    [Parameter]
+    public Character character { get; set; } = null;
+    private Dictionary<string, Color> statusColors = new Dictionary<string, Color>
+    {
+        { "Alive", Color.Success },
+        { "Dead", Color.Error },
+
+    };
+    public Color GetColor(string status)
+    {
+        // Busca el valor de color para el estado, devuelve Color.Default si no se encuentra
+        if (statusColors.TryGetValue(status, out var color))
+        {
+            return color;
+        }
+        return Color.Default;
+    }
+    public bool _isOpen;
+
+    public void ToggleOpen()
+    {
+        if (_isOpen)
+            _isOpen = false;
+        else
+            _isOpen = true;
+    }
+
+}
