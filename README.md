@@ -7,13 +7,8 @@
 
 [![imagen-2023-09-27-194835607.png](https://i.postimg.cc/2yR6HKkP/imagen-2023-09-27-194835607.png)](https://postimg.cc/ftCDy50K)
 
-#### Filter[SearchBar]
-
-[![imagen-2023-09-27-194457195.png](https://i.postimg.cc/Z53N4pgP/imagen-2023-09-27-194457195.png)](https://postimg.cc/tsqJzZ97)
-
-#### Filters[SearchBar-Status]
-
-[![imagen-2023-09-27-194245409.png](https://i.postimg.cc/tJ5rr8dT/imagen-2023-09-27-194245409.png)](https://postimg.cc/gLxqjSTF)
+#### Filter[SearchBar-all filters]
+[![imagen-2023-09-29-161412544.png](https://i.postimg.cc/PJSqkfn6/imagen-2023-09-29-161412544.png)](https://postimg.cc/1VNSGQt6)
 
 #### Navigation
 <p>if you click the button, the web make a callback whit the data bind value (number selected)</p>
