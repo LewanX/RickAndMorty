@@ -2,7 +2,7 @@
 ### Views
 #### Characters Views
 
-[![imagen-2023-09-27-194032659.png](https://i.postimg.cc/9fRG4sr9/imagen-2023-09-27-194032659.png)](https://postimg.cc/Y474ZnN2)
+[![imagen-2023-09-29-161228077.png](https://i.postimg.cc/dVq9B45w/imagen-2023-09-29-161228077.png)](https://postimg.cc/BXVDZcWV)
 <p>If you click a character model, a modal with  more information will be placed</p>
 
 [![imagen-2023-09-27-194835607.png](https://i.postimg.cc/2yR6HKkP/imagen-2023-09-27-194835607.png)](https://postimg.cc/ftCDy50K)
